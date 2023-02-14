@@ -7,7 +7,7 @@ spec:
   - group: '*'
     kind: '*'
   destinations:
-  - namespace: argocd
+  - namespace: sample-app
     server: https://kubernetes.default.svc
   orphanedResources:
     warn: false
