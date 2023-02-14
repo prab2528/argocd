@@ -1,13 +1,13 @@
 kind: AppProject
 metadata:
   name: sample-project
-  namespace: apps
+  namespace: argocd
 spec:
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
   destinations:
-  - namespace: apps
+  - namespace: argocd
     server: https://kubernetes.default.svc
   orphanedResources:
     warn: false
