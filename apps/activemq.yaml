@@ -1,0 +1,102 @@
+# default:
+#   rbac:
+#     squads:
+#       - payments
+  source:
+    repoURL: https://github.com/artemiscloud/activemq-artemis-operator
+    path: deploy/install
+    targetRevision: v1.0.7
+    include:
+      - "*.yaml"
+    raw:
+      - apiVersion: broker.amq.io/v1beta1
+        kind: ActiveMQArtemis
+        metadata:
+          name: artemis-broker
+        spec:
+          adminUser: "admin"
+          adminPassword: "admin"
+          deploymentPlan:
+            size: 2
+            image: "quay.io/artemiscloud/activemq-artemis-broker-kubernetes:artemis.2.27.0"
+            initImage: "quay.io/artemiscloud/activemq-artemis-broker-init:1.0.11"
+            persistenceEnabled: true
+            messageMigration: true
+            clustered: true
+            storage:
+              size: "2Gi"
+              storageClassName: gp2-sc
+            resources:
+              limits:
+                cpu: "500m"
+                memory: "2048Mi"
+              requests:
+                cpu: "250m"
+                memory: "512Mi"
+      - apiVersion: v1
+        kind: Service
+        metadata:
+          name: artemis-broker-console-0
+          labels:
+            ActiveMQArtemis: artemis-broker
+            application: artemis-broker-app
+        spec:
+          selector:
+            ActiveMQArtemis: artemis-broker
+            application: artemis-broker-app
+            statefulset.kubernetes.io/pod-name: artemis-broker-ss-0
+          ports:
+            - name: console-0
+              protocol: TCP
+              port: 8161
+              targetPort: 8161
+          clusterIP: None
+          type: ClusterIP
+      - apiVersion: v1
+        kind: Service
+        metadata:
+          name: artemis-broker-jgroups
+        spec:
+          clusterIP: None
+          ports:
+            - name: 7800-7800
+              port: 7800
+              protocol: TCP
+            - name: 7900-7900
+              port: 7900
+              protocol: TCP
+          selector:
+            ActiveMQArtemis: artemis-broker
+            application: artemis-broker-app
+          type: ClusterIP          
+      - apiVersion: networking.istio.io/v1alpha3
+        kind: VirtualService
+        metadata:
+          name: artemis-broker
+        spec:
+          gateways:
+            - istio-system/apps
+          hosts:
+            - "artemis-broker-console-0.apps.{{ $.Values.cluster.domain.base }}"
+          http:
+            - match:
+                - uri:
+                    prefix: /
+              route:
+                - destination:
+                    host: artemis-broker-console-0.activemq-artemis.svc.cluster.local
+                    port:
+                      number: 8161      
+    kustomization:
+      resources:
+        - include.yaml
+        - raw.yaml
+      images:
+        - name: quay.io/artemiscloud/activemq-artemis-operator
+          newName: dragonproject-docker-apps.jfrog.io/activemq-artemis-operator
+          newTag: 1.0.7-mox.1
+
+ptdev: {}
+dev: {}
+stg: {}
+prod: {}
