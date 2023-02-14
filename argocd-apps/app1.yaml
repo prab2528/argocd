@@ -2,10 +2,10 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: sample-app
-  namespace: sample-app
+  namespace: apps
 spec:
   destination:
-    namespace: sample-app
+    namespace: apps
     server: https://kubernetes.default.svc
   project: default
   source:

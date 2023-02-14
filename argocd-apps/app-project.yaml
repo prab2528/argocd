@@ -1,0 +1,16 @@
+kind: AppProject
+metadata:
+  name: sample-project
+  namespace: apps
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - namespace: apps
+    server: https://kubernetes.default.svc
+  orphanedResources:
+    warn: false
+  sourceRepos:
+  - '*'
+EOF
