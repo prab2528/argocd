@@ -1,7 +1,7 @@
-# default:
-#   rbac:
-#     squads:
-#       - payments
+default:
+  # rbac:
+  #   squads:
+  #     - payments
   source:
     repoURL: https://github.com/artemiscloud/activemq-artemis-operator
     path: deploy/install
