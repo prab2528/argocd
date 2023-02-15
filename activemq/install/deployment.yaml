@@ -62,4 +62,13 @@ spec:
   selector:
     ActiveMQArtemis: artemis-broker
     application: artemis-broker-app
-  type: ClusterIP          
+  type: ClusterIP
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: activemq
+  labels:
+    app: activemq  
