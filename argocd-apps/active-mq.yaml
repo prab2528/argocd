@@ -69,24 +69,24 @@ default:
             ActiveMQArtemis: artemis-broker
             application: artemis-broker-app
           type: ClusterIP          
-      - apiVersion: networking.istio.io/v1alpha3
-        kind: VirtualService
-        metadata:
-          name: artemis-broker
-        spec:
-          gateways:
-            - istio-system/apps
-          hosts:
-            - "artemis-broker-console-0.apps.{{ $.Values.cluster.domain.base }}"
-          http:
-            - match:
-                - uri:
-                    prefix: /
-              route:
-                - destination:
-                    host: artemis-broker-console-0.activemq-artemis.svc.cluster.local
-                    port:
-                      number: 8161      
+      # - apiVersion: networking.istio.io/v1alpha3
+      #   kind: VirtualService
+      #   metadata:
+      #     name: artemis-broker
+      #   spec:
+      #     gateways:
+      #       - istio-system/apps
+      #     hosts:
+      #       - "artemis-broker-console-0.apps.{{ $.Values.cluster.domain.base }}"
+      #     http:
+      #       - match:
+      #           - uri:
+      #               prefix: /
+      #         route:
+      #           - destination:
+      #               host: artemis-broker-console-0.activemq-artemis.svc.cluster.local
+      #               port:
+      #                 number: 8161      
     kustomization:
       resources:
         - include.yaml
