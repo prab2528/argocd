@@ -3,16 +3,16 @@ kind: ActiveMQArtemis
 metadata:
   name: artemis-broker
 spec:
-  template:
-    metadata:
-      annotations:
-        vault.hashicorp.com/agent-inject: "true"
-        vault.hashicorp.com/agent-inject-secret-helloworld: "secret/helloworld"
-        vault.hashicorp.com/role: "myapp"
+  # template:
+  #   metadata:
+  #     annotations:
+  #       vault.hashicorp.com/agent-inject: "true"
+  #       vault.hashicorp.com/agent-inject-secret-helloworld: "secret/helloworld"
+  #       vault.hashicorp.com/role: "myapp"
   adminUser: "admin"
   adminPassword: "admin"
   deploymentPlan:
-    serviceAccountName: activemq
+    # serviceAccountName: activemq
     size: 2
     image: "quay.io/artemiscloud/activemq-artemis-broker-kubernetes:artemis.2.27.0"
     initImage: "quay.io/artemiscloud/activemq-artemis-broker-init:1.0.11"
