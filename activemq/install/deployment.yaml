@@ -43,7 +43,7 @@ spec:
       port: 8161
       targetPort: 8161
   clusterIP: None
-  type: ClusterIP
+  type: NodePort
 
 ---
 apiVersion: v1
