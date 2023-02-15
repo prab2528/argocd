@@ -66,9 +66,9 @@ spec:
 
 ---
 
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: activemq
-  labels:
-    app: activemq  
+# apiVersion: v1
+# kind: ServiceAccount
+# metadata:
+#   name: activemq
+#   labels:
+#     app: activemq  
