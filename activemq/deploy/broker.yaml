@@ -1,23 +1,71 @@
+---
 apiVersion: broker.amq.io/v1beta1
 kind: ActiveMQArtemis
 metadata:
-  name: ex-aao
+  name: artemis-broker
 spec:
+  adminUser: "admin"
+  adminPassword: "admin"
   deploymentPlan:
-    size: 3 # (1)
-    image: quay.io/artemiscloud/activemq-artemis-broker-kubernetes:0.2.1
+    serviceAccountName: activemq
+    size: 2
+    image: "quay.io/artemiscloud/activemq-artemis-broker-kubernetes:artemis.2.27.0-mox.1"
+    initImage: "quay.io/artemiscloud/activemq-artemis-broker-init:1.0.11-mox.1"
+    persistenceEnabled: true
     messageMigration: true
+    clustered: true
+    storage:
+      size: "5Gi"
+      storageClassName: gp2-sc
     resources:
       limits:
         cpu: "500m"
-        memory: "1024Mi"
+        memory: "2048Mi"
       requests:
         cpu: "250m"
         memory: "512Mi"
-  acceptors: # (2)
-    - name: amqp
-      protocols: amqp
-      port: 5672
-      connectionsAllowed: 5
-  console: # (3)
-    expose: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: artemis-broker-console-0
+  labels:
+    ActiveMQArtemis: artemis-broker
+    application: artemis-broker-app
+spec:
+  selector:
+    ActiveMQArtemis: artemis-broker
+    application: artemis-broker-app
+    statefulset.kubernetes.io/pod-name: artemis-broker-ss-0
+  ports:
+    - name: console-0
+      protocol: TCP
+      port: 8161
+      targetPort: 8161
+  clusterIP: None
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: artemis-broker-jgroups
+spec:
+  clusterIP: None
+  ports:
+    - name: 7800-7800
+      port: 7800
+      protocol: TCP
+    - name: 7900-7900
+      port: 7900
+      protocol: TCP
+  selector:
+    ActiveMQArtemis: artemis-broker
+    application: artemis-broker-app
+  type: ClusterIP          
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: activemq
+  labels:
+    app: activemq     
