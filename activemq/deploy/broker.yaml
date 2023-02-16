@@ -9,8 +9,8 @@ spec:
   deploymentPlan:
     serviceAccountName: activemq
     size: 2
-    image: "quay.io/artemiscloud/activemq-artemis-broker-kubernetes:artemis.2.27.0-mox.1"
-    initImage: "quay.io/artemiscloud/activemq-artemis-broker-init:1.0.11-mox.1"
+    image: "quay.io/artemiscloud/activemq-artemis-broker-kubernetes:artemis.2.27.0"
+    initImage: "quay.io/artemiscloud/activemq-artemis-broker-init:1.0.11"
     persistenceEnabled: true
     messageMigration: true
     clustered: true
