@@ -42,8 +42,8 @@ spec:
       protocol: TCP
       port: 8161
       targetPort: 8161
-  clusterIP: None
-  type: ClusterIP
+  # clusterIP: None
+  type: NodePort
 ---
 apiVersion: v1
 kind: Service
