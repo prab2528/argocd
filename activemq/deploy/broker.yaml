@@ -16,7 +16,7 @@ spec:
     clustered: true
     storage:
       size: "5Gi"
-      storageClassName: gp2-sc
+      # storageClassName: gp2-sc
     resources:
       limits:
         cpu: "500m"
