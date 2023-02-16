@@ -341,7 +341,7 @@ spec:
   - name: v1beta1
     schema:
       openAPIV3Schema:
-        description: Security configuration for the broker
+        description: ActiveMQArtemisSecurity is the Schema for the activemqartemissecurities API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
@@ -360,10 +360,8 @@ spec:
                   type: string
                 type: array
               loginModules:
-                description: Specifies the login modules
                 properties:
                   guestLoginModules:
-                    description: Specifies the guest login modules
                     items:
                       properties:
                         guestRole:
@@ -378,11 +376,9 @@ spec:
                       type: object
                     type: array
                   keycloakLoginModules:
-                    description: Specifies the Keycloak login modules
                     items:
                       properties:
                         configuration:
-                          description: Specifies the Keycloak module configuration
                           properties:
                             allowAnyHostName:
                               description: If to allow any host name
@@ -430,14 +426,13 @@ spec:
                               format: int64
                               type: integer
                             credentials:
-                              description: Specify the credentials
                               items:
                                 properties:
                                   key:
-                                    description: The regular expression to match the Redirect URI
+                                    description: The credentials key
                                     type: string
                                   value:
-                                    description: The replacement value
+                                    description: The credentials value
                                     type: string
                                 type: object
                               type: array
@@ -480,14 +475,14 @@ spec:
                               description: Public key for the realm
                               type: string
                             redirectRewriteRules:
-                              description: Specify the redirect rewrite rules
+                              description: The regular expression to which the Redirect URI is to be matched value is the replacement String
                               items:
                                 properties:
                                   key:
-                                    description: The regular expression to match the Redirect URI
+                                    description: The credentials key
                                     type: string
                                   value:
-                                    description: The replacement value
+                                    description: The credentials value
                                     type: string
                                 type: object
                               type: array
@@ -542,14 +537,12 @@ spec:
                       type: object
                     type: array
                   propertiesLoginModules:
-                    description: Specifies the properties login modules
                     items:
                       properties:
                         name:
                           description: Name for PropertiesLoginModule
                           type: string
                         users:
-                          description: Specifies the users
                           items:
                             properties:
                               name:
@@ -569,26 +562,23 @@ spec:
                     type: array
                 type: object
               securityDomains:
-                description: Specifies the security domains
                 properties:
                   brokerDomain:
-                    description: Specify the broker domain
                     properties:
                       loginModules:
-                        description: Specify the login modules
                         items:
                           properties:
                             debug:
-                              description: Debug option of the login module
+                              description: Debug option of login modules for broker/console domain
                               type: boolean
                             flag:
-                              description: Flag of the login module
+                              description: Flag of login modules for broker/console domain
                               type: string
                             name:
-                              description: Name of the login module
+                              description: Name for login modules for broker/console domain
                               type: string
                             reload:
-                              description: Reload option of the login module
+                              description: Reload option of login modules for broker/console domain
                               type: boolean
                           type: object
                         type: array
@@ -597,23 +587,21 @@ spec:
                         type: string
                     type: object
                   consoleDomain:
-                    description: Specify the console domain
                     properties:
                       loginModules:
-                        description: Specify the login modules
                         items:
                           properties:
                             debug:
-                              description: Debug option of the login module
+                              description: Debug option of login modules for broker/console domain
                               type: boolean
                             flag:
-                              description: Flag of the login module
+                              description: Flag of login modules for broker/console domain
                               type: string
                             name:
-                              description: Name of the login module
+                              description: Name for login modules for broker/console domain
                               type: string
                             reload:
-                              description: Reload option of the login module
+                              description: Reload option of login modules for broker/console domain
                               type: boolean
                           type: object
                         type: array
@@ -623,17 +611,14 @@ spec:
                     type: object
                 type: object
               securitySettings:
-                description: Specifies the security settings
                 properties:
                   broker:
-                    description: Specify the broker security settings
                     items:
                       properties:
                         match:
                           description: The address match pattern of a security setting
                           type: string
                         permissions:
-                          description: Specify the permissions
                           items:
                             properties:
                               operationType:
@@ -651,13 +636,10 @@ spec:
                       type: object
                     type: array
                   management:
-                    description: Specify the management security settings
                     properties:
                       authorisation:
-                        description: Specify the authorisation configurations
                         properties:
                           allowedList:
-                            description: Specify the allowed entries
                             items:
                               properties:
                                 domain:
@@ -669,48 +651,44 @@ spec:
                               type: object
                             type: array
                           defaultAccess:
-                            description: Specify the default accesses
                             items:
                               properties:
                                 method:
-                                  description: Specifies the access entry method
+                                  description: The method of defaultAccess/roleAccess List
                                   type: string
                                 roles:
-                                  description: Specifies the access entry roles
+                                  description: The roles of defaultAccess/roleAccess List
                                   items:
                                     type: string
                                   type: array
                               type: object
                             type: array
                           roleAccess:
-                            description: Specify the role accesses
                             items:
                               properties:
                                 accessList:
-                                  description: Specify the default accesses
                                   items:
                                     properties:
                                       method:
-                                        description: Specifies the access entry method
+                                        description: The method of defaultAccess/roleAccess List
                                         type: string
                                       roles:
-                                        description: Specifies the access entry roles
+                                        description: The roles of defaultAccess/roleAccess List
                                         items:
                                           type: string
                                         type: array
                                     type: object
                                   type: array
                                 domain:
-                                  description: The domain of the role access
+                                  description: The domain of roleAccess List
                                   type: string
                                 key:
-                                  description: The key of the role access
+                                  description: The key of roleAccess List
                                   type: string
                               type: object
                             type: array
                         type: object
                       connector:
-                        description: Specify connector configurations
                         properties:
                           authenticatorType:
                             description: The management authentication type
