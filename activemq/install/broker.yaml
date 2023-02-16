@@ -43,7 +43,7 @@ spec:
       port: 8161
       targetPort: 8161
   # clusterIP: None
-  type: NodePort
+  type: ClusterIP
 ---
 apiVersion: v1
 kind: Service
