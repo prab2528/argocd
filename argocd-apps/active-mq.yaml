@@ -16,5 +16,5 @@ spec:
   project: default
   source:
     repoURL: git@github.com:prab2528/argocd.git
-    path: activemq/install
+    path: activemq/deploy
     targetRevision: HEAD

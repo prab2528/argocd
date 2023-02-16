@@ -16,7 +16,7 @@ spec:
   - name: v1beta1
     schema:
       openAPIV3Schema:
-        description: ActiveMQArtemis is the Schema for the activemqartemises API
+        description: A stateful deployment of one or more brokers
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
@@ -30,7 +30,7 @@ spec:
             description: ActiveMQArtemisSpec defines the desired state of ActiveMQArtemis
             properties:
               acceptors:
-                description: Acceptor configuration
+                description: Specifies the acceptor configuration
                 items:
                   properties:
                     amqpMinLargeMessageSize:
@@ -40,7 +40,7 @@ spec:
                       description: To indicate which kind of routing type to use.
                       type: string
                     bindToAllInterfaces:
-                      description: Whether to let the acceptor to bind to all interfaces (0.0.0.0)
+                      description: Whether to let the acceptor to bind to all interfaces
                       type: boolean
                     connectionsAllowed:
                       description: Max number of connections allowed to make
@@ -61,6 +61,7 @@ spec:
                       description: To indicate which kind of routing type to use
                       type: string
                     name:
+                      description: The acceptor name
                       type: string
                     needClientAuth:
                       description: Tells a client connecting to this acceptor that 2-way SSL is required. This property takes precedence over wantClientAuth.
@@ -107,8 +108,10 @@ spec:
                   type: object
                 type: array
               addressSettings:
+                description: Specifies the address configurations
                 properties:
                   addressSetting:
+                    description: Specifies the address settings
                     items:
                       properties:
                         addressFullPolicy:
@@ -163,7 +166,7 @@ spec:
                           description: What to do when an address is no longer in broker.xml.  OFF = will do nothing addresses will remain, FORCE = delete address and its queues even if messages remaining.
                           type: string
                         configDeleteDiverts:
-                          description: What to do when a divert is no longer in broker.xml.  OFF = will do nothing and divert will remain(default), FORCE = delete divert.
+                          description: What to do when a divert is no longer in broker.xml.  OFF = will do nothing and divert will remain(default), FORCE = delete divert
                           type: string
                         configDeleteQueues:
                           description: What to do when a queue is no longer in broker.xml.  OFF = will do nothing queues will remain, FORCE = delete queues even if messages remaining.
@@ -349,6 +352,7 @@ spec:
                   type: string
                 type: array
               connectors:
+                description: Specifies connectors and connector configuration
                 items:
                   properties:
                     enabledCipherSuites:
@@ -410,6 +414,7 @@ spec:
                   type: object
                 type: array
               console:
+                description: Specifies the console configuration
                 properties:
                   expose:
                     description: Whether or not to expose this port
@@ -425,9 +430,10 @@ spec:
                     type: boolean
                 type: object
               deploymentPlan:
+                description: Specifies the deployment plan
                 properties:
                   affinity:
-                    description: custom Affinity
+                    description: Specifies affinity configuration
                     properties:
                       nodeAffinity:
                         description: Describes node affinity scheduling rules for the pod.
@@ -887,6 +893,11 @@ spec:
                             type: array
                         type: object
                     type: object
+                  annotations:
+                    additionalProperties:
+                      type: string
+                    description: Custom annotations to be added to broker pod
+                    type: object
                   clustered:
                     description: Whether broker is clustered
                     type: boolean
@@ -894,14 +905,15 @@ spec:
                     description: Whether or not to install the artemis metrics plugin
                     type: boolean
                   extraMounts:
+                    description: Specifies extra mounts
                     properties:
                       configMaps:
-                        description: Name of ConfigMap
+                        description: Specifies ConfigMap names
                         items:
                           type: string
                         type: array
                       secrets:
-                        description: Name of Secret
+                        description: Specifies Secret names
                         items:
                           type: string
                         type: array
@@ -924,7 +936,7 @@ spec:
                     description: Assign labels to a broker pod, the keys `ActiveMQArtemis` and `application` are not allowed
                     type: object
                   livenessProbe:
-                    description: Probe describes a health check to be performed against a container to determine whether it is alive or ready to receive traffic.
+                    description: Specifies the liveness probe configuration
                     properties:
                       exec:
                         description: Exec specifies the action to take.
@@ -1034,12 +1046,59 @@ spec:
                   nodeSelector:
                     additionalProperties:
                       type: string
-                    description: custom node selector
+                    description: Specifies the node selector
                     type: object
                   persistenceEnabled:
                     description: If true use persistent volume via persistent volume claim for journal storage
                     type: boolean
+                  podDisruptionBudget:
+                    description: Specifies the pod disruption budget
+                    properties:
+                      maxUnavailable:
+                        anyOf:
+                        - type: integer
+                        - type: string
+                        description: An eviction is allowed if at most "maxUnavailable" pods selected by "selector" are unavailable after the eviction, i.e. even in absence of the evicted pod. For example, one can prevent all voluntary evictions by specifying 0. This is a mutually exclusive setting with "minAvailable".
+                        x-kubernetes-int-or-string: true
+                      minAvailable:
+                        anyOf:
+                        - type: integer
+                        - type: string
+                        description: An eviction is allowed if at least "minAvailable" pods selected by "selector" will still be available after the eviction, i.e. even in the absence of the evicted pod.  So for example you can prevent all voluntary evictions by specifying "100%".
+                        x-kubernetes-int-or-string: true
+                      selector:
+                        description: Label query over pods whose evictions are managed by the disruption budget. A null selector will match no pods, while an empty ({}) selector will select all pods within the namespace.
+                        properties:
+                          matchExpressions:
+                            description: matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                            items:
+                              description: A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.
+                              properties:
+                                key:
+                                  description: key is the label key that the selector applies to.
+                                  type: string
+                                operator:
+                                  description: operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.
+                                  type: string
+                                values:
+                                  description: values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch.
+                                  items:
+                                    type: string
+                                  type: array
+                              required:
+                              - key
+                              - operator
+                              type: object
+                            type: array
+                          matchLabels:
+                            additionalProperties:
+                              type: string
+                            description: matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
+                            type: object
+                        type: object
+                    type: object
                   podSecurity:
+                    description: Specifies the pod security configurations
                     properties:
                       runAsUser:
                         description: runAsUser as defined in PodSecurityContext for the pod
@@ -1050,7 +1109,7 @@ spec:
                         type: string
                     type: object
                   podSecurityContext:
-                    description: PodSecurityContext holds pod-level security attributes and common container settings. Some fields are also present in container.securityContext.  Field values of container.securityContext take precedence over field values of PodSecurityContext.
+                    description: Specifies the pod security context
                     properties:
                       fsGroup:
                         description: "A special supplemental group that applies to all containers in a pod. Some volume types allow the Kubelet to change the ownership of that volume to be owned by the pod: \n 1. The owning GID will be the FSGroup 2. The setgid bit is set (new files created in the volume will be owned by FSGroup) 3. The permission bits are OR'd with rw-rw---- \n If unset, the Kubelet will not modify the ownership and permissions of any volume. Note that this field cannot be set when spec.os.name is windows."
@@ -1138,7 +1197,7 @@ spec:
                         type: object
                     type: object
                   readinessProbe:
-                    description: Probe describes a health check to be performed against a container to determine whether it is alive or ready to receive traffic.
+                    description: Specifies the readiness probe configuration
                     properties:
                       exec:
                         description: Exec specifies the action to take.
@@ -1243,7 +1302,7 @@ spec:
                     description: If true require user password login credentials for broker protocol ports
                     type: boolean
                   resources:
-                    description: ResourceRequirements describes the compute resource requirements.
+                    description: Specifies the minimum/maximum amount of compute resources required/allowed
                     properties:
                       limits:
                         additionalProperties:
@@ -1269,14 +1328,17 @@ spec:
                     format: int32
                     type: integer
                   storage:
+                    description: Specifies the storage configurations
                     properties:
                       size:
+                        description: The storage size
                         type: string
                       storageClassName:
                         description: The storageClassName to be used in PVC
                         type: string
                     type: object
                   tolerations:
+                    description: Specifies the tolerations
                     items:
                       description: The pod this Toleration is attached to tolerates any taint that matches the triple <key,value,effect> using the matching operator <operator>.
                       properties:
@@ -1379,14 +1441,17 @@ spec:
                   - name
                   type: object
                 type: array
+              ingressDomain:
+                description: The ingress domain to expose the application. By default, on Kubernetes it is apps.artemiscloud.io and on OpenShift it is the Ingress Controller domain.
+                type: string
               upgrades:
-                description: ActiveMQArtemis App product upgrade flags, this is deprecated in v1beta1, specifying the Version is sufficient
+                description: Specifies the upgrades
                 properties:
                   enabled:
-                    description: Set to true to enable automatic micro version product upgrades, disabled by default.
+                    description: Set true to enable automatic micro version product upgrades, it is disabled by default.
                     type: boolean
                   minor:
-                    description: Set to true to enable automatic micro version product upgrades, disabled by default. Requires spec.upgrades.enabled true.
+                    description: Set true to enable automatic minor product version upgrades, it is disabled by default. Requires spec.upgrades.enabled to be true.
                     type: boolean
                 required:
                 - enabled
@@ -1443,8 +1508,23 @@ spec:
                   - type
                   type: object
                 type: array
+              externalConfigs:
+                description: Current state of external referenced resources
+                items:
+                  properties:
+                    name:
+                      description: Name
+                      type: string
+                    resourceVersion:
+                      description: Resource Version
+                      type: string
+                  required:
+                  - name
+                  - resourceVersion
+                  type: object
+                type: array
               podStatus:
-                description: Pod Status
+                description: The current pods
                 properties:
                   ready:
                     description: Deployments are ready to serve requests
