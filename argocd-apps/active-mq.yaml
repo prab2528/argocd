@@ -18,5 +18,6 @@ spec:
     repoURL: git@github.com:prab2528/argocd.git
     path: activemq/install
     targetRevision: HEAD
-    include:
-      - "*.yaml"
+    directory:
+      recurse: true
+      include: '*.yaml'
