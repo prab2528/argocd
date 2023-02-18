@@ -7,7 +7,6 @@ spec:
   adminUser: "admin"
   adminPassword: "admin"
   deploymentPlan:
-    properties:
       annotations:
         additionalProperties:
           vault.hashicorp.com/agent-inject: "true"
