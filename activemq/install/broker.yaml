@@ -11,7 +11,7 @@ spec:
       app: artemis-broker-app        
     annotations:
         vault.hashicorp.com/agent-inject: "true"
-        vault.hashicorp.com/agent-inject-secret-activemq: "secret/activemq"
+        vault.hashicorp.com/agent-inject-secret-helloworld: "secrets/helloworld"
         vault.hashicorp.com/role: "myapp"
     podSecurity:
       serviceAccountName: activemq
