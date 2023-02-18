@@ -7,13 +7,12 @@ spec:
   adminUser: "admin"
   adminPassword: "admin"
   deploymentPlan:
-
     annotations:
-
         vault.hashicorp.com/agent-inject: "true"
-        vault.hashicorp.com/agent-inject-secret-helloworld: "secret/helloworld"
+        vault.hashicorp.com/agent-inject-secret-activemq: "secret/activemq"
         vault.hashicorp.com/role: "myapp"
-    # serviceAccountName: activemq
+    podSecurity:
+      serviceAccountName: activemq
     size: 2
     image: "quay.io/artemiscloud/activemq-artemis-broker-kubernetes:artemis.2.27.0"
     initImage: "quay.io/artemiscloud/activemq-artemis-broker-init:1.0.11"
@@ -137,3 +136,13 @@ spec:
                 port:
                   number: 8161
             path: /   
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: activemq
+  labels:
+    ActiveMQArtemis: artemis-broker
+    application: artemis-broker-app
