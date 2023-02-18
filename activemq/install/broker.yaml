@@ -70,21 +70,21 @@ spec:
     application: artemis-broker-app
   type: ClusterIP          
 ---
-  apiVersion: networking.k8s.io/v1
-  kind: Ingress
-  metadata:
-    name: artemis-broker-console
-    namespace: activemq
-  spec:
-    ingressClassName: nginx
-    rules:
-      - host: one.activemq.com
-        http:
-          paths:
-            - pathType: Prefix
-              backend:
-                service:
-                  name: artemis-broker-hdls-svc
-                  port:
-                    number: 8161
-              path: /   
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: artemis-broker-console
+  namespace: activemq
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: one.activemq.com
+      http:
+        paths:
+          - pathType: Prefix
+            backend:
+              service:
+                name: artemis-broker-hdls-svc
+                port:
+                  number: 8161
+            path: /   
