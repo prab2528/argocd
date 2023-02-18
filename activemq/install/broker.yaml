@@ -7,11 +7,12 @@ spec:
   adminUser: "admin"
   adminPassword: "admin"
   deploymentPlan:
-      annotations:
-        additionalProperties:
-          vault.hashicorp.com/agent-inject: "true"
-          vault.hashicorp.com/agent-inject-secret-helloworld: "secret/helloworld"
-          vault.hashicorp.com/role: "myapp"
+
+    annotations:
+
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-inject-secret-helloworld: "secret/helloworld"
+        vault.hashicorp.com/role: "myapp"
     # serviceAccountName: activemq
     size: 2
     image: "quay.io/artemiscloud/activemq-artemis-broker-kubernetes:artemis.2.27.0"
