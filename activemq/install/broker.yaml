@@ -24,13 +24,13 @@ spec:
       requests:
         cpu: "250m"
         memory: "512Mi"
-  # acceptors: # (2)
-  #   - name: amqp
-  #     protocols: amqp
-  #     port: 5672
-  #     connectionsAllowed: 5
-  # console: # (3)
-  #   expose: true
+  acceptors: # (2)
+    - name: amqp
+      protocols: amqp
+      port: 5672
+      connectionsAllowed: 5
+  console: # (3)
+    expose: true
 ---
 apiVersion: v1
 kind: Service
@@ -70,9 +70,21 @@ spec:
     application: artemis-broker-app
   type: ClusterIP          
 ---
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: activemq
-  labels:
-    app: activemq     
+  apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: artemis-broker-console
+    namespace: activemq
+  spec:
+    ingressClassName: nginx
+    rules:
+      - host: one.activemq.com
+        http:
+          paths:
+            - pathType: Prefix
+              backend:
+                service:
+                  name: artemis-broker-hdls-svc
+                  port:
+                    number: 8161
+              path: /   
