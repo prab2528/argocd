@@ -51,6 +51,28 @@ spec:
       targetPort: 8161
   # clusterIP: None
   type: ClusterIP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: artemis-broker-console-1
+  labels:
+    ActiveMQArtemis: artemis-broker
+    application: artemis-broker-app
+spec:
+  selector:
+    ActiveMQArtemis: artemis-broker
+    application: artemis-broker-app
+    statefulset.kubernetes.io/pod-name: artemis-broker-ss-1
+  ports:
+    - name: console-0
+      protocol: TCP
+      port: 8161
+      targetPort: 8161
+  # clusterIP: None
+  type: ClusterIP
 ---
 apiVersion: v1
 kind: Service
@@ -85,6 +107,27 @@ spec:
             backend:
               service:
                 name: artemis-broker-console-0
+                port:
+                  number: 8161
+            path: /   
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: artemis-broker-console-1
+  namespace: activemq
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: one.activemq.com
+      http:
+        paths:
+          - pathType: Prefix
+            backend:
+              service:
+                name: artemis-broker-console-1
                 port:
                   number: 8161
             path: /   
