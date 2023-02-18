@@ -7,6 +7,9 @@ spec:
   adminUser: "admin"
   adminPassword: "admin"
   deploymentPlan:
+    selector:
+      matchLabels:
+        application: artemis-broker-app        
     annotations:
         vault.hashicorp.com/agent-inject: "true"
         vault.hashicorp.com/agent-inject-secret-activemq: "secret/activemq"
@@ -144,5 +147,4 @@ kind: ServiceAccount
 metadata:
   name: activemq
   labels:
-    ActiveMQArtemis: artemis-broker
     application: artemis-broker-app
