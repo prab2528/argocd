@@ -6,9 +6,9 @@ metadata:
 spec:
   adminUser: "admin"
   adminPassword: "admin"
-  # env:
-  # - name: ACTIVEMQ_PASSWORD
-  #   value: <path:secret/data/activemq#password>
+  env:
+  - name: ACTIVEMQ_PASSWORD
+    value: ${ACTIVEMQ_PASSWORD}
   deploymentPlan:
     labels:
       app: artemis-broker-app        
