@@ -4,8 +4,8 @@ kind: ActiveMQArtemis
 metadata:
   name: artemis-broker
 spec:
-  adminUser: "admin"
-  adminPassword: "admin"
+  # adminUser: "admin"
+  # adminPassword: "admin"
   env:
   - name: ACTIVEMQ_PASSWORD
     value: ${ACTIVEMQ_PASSWORD}
@@ -14,21 +14,14 @@ spec:
       app: artemis-broker-app        
     annotations:
         vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/secret-volume-path-activemq: "/amq-broker/etc/artemis-users.properties"
         vault.hashicorp.com/agent-inject-secret-activemq: "secret/activemq"
         vault.hashicorp.com/role: "myapp"        
         vault.hashicorp.com/agent-inject-template-activemq: |
           {{- with secret "secret/activemq" -}}
-          # export ACTIVEMQ_PASSWORD={{ .Data.data.password }}
-          #!/bin/sh
-          set -e
-
-          {{- range $key, $value := .Data.data }}
-          echo export "{{ $key }}={{ $value }}" >> .bashrc
+           admin = {{ .Data.data.password }}
           {{- end }}
-
-          exec "$@"
-          {{- end }}
-        vault.hashicorp.com/agent-inject-command-activemq: "cp /vault/secrets/activemq /vault/secrets/activemq.sh && chmod +x /vault/secrets/activemq.sh && ./vault/secrets/activemq.sh" 
+        # vault.hashicorp.com/agent-inject-command-activemq: "cp /vault/secrets/activemq /vault/secrets/activemq.sh && chmod +x /vault/secrets/activemq.sh && ./vault/secrets/activemq.sh" 
     podSecurity:
       serviceAccountName: activemq
     size: 2
@@ -36,16 +29,16 @@ spec:
     initImage: "quay.io/artemiscloud/activemq-artemis-broker-init:1.0.11"
     persistenceEnabled: false
     messageMigration: true
-    readinessProbe:
-        exec:
-          command:
-            - /bin/bash
-            - '-c'
-            - /opt/amq/bin/readinessProbe.sh
-            - '1'
-            - >-
-              /vault/secrets/activemq.sh
-              source .bashrc
+    # readinessProbe:
+    #     exec:
+    #       command:
+    #         - /bin/bash
+    #         - '-c'
+    #         - /opt/amq/bin/readinessProbe.sh
+    #         - '1'
+    #         - >-
+    #           /vault/secrets/activemq.sh
+    #           source .bashrc
     clustered: true
     # storage:
     #   size: "5Gi"
