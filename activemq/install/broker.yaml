@@ -18,9 +18,17 @@ spec:
         vault.hashicorp.com/role: "myapp"        
         vault.hashicorp.com/agent-inject-template-activemq: |
           {{- with secret "secret/activemq" -}}
-          export ACTIVEMQ_PASSWORD={{ .Data.data.password }}
+          # export ACTIVEMQ_PASSWORD={{ .Data.data.password }}
+          #!/bin/sh
+          set -e
+
+          {{- range $key, $value := .Data.data }}
+          echo {{ $key }}={{ $value }} >> .bashrc
           {{- end }}
-        vault.hashicorp.com/agent-inject-command-activemq.txt: "cp /vault/secrets/activemq /vault/secrets/activemq.sh && chmod +x /vault/secrets/activemq.sh && ./vault/secrets/activemq.sh" 
+
+          exec "$@"
+          {{- end }}
+        vault.hashicorp.com/agent-inject-command-activemq: "cp /vault/secrets/activemq /vault/secrets/activemq.sh && chmod +x /vault/secrets/activemq.sh && ./vault/secrets/activemq.sh" 
     podSecurity:
       serviceAccountName: activemq
     size: 2
