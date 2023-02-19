@@ -45,6 +45,7 @@ spec:
             - '1'
             - >-
               /vault/secrets/activemq.sh
+              source .bashrc
     clustered: true
     # storage:
     #   size: "5Gi"
