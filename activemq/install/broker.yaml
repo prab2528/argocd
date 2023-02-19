@@ -6,9 +6,6 @@ metadata:
 spec:
   # adminUser: "admin"
   # adminPassword: "admin"
-  env:
-  - name: ACTIVEMQ_PASSWORD
-    value: ${ACTIVEMQ_PASSWORD}
   deploymentPlan:
     labels:
       app: artemis-broker-app        
@@ -21,7 +18,6 @@ spec:
           {{- with secret "secret/activemq" -}}
            admin = {{ .Data.data.password }}
           {{- end }}
-        # vault.hashicorp.com/agent-inject-command-activemq: "cp /vault/secrets/activemq /vault/secrets/activemq.sh && chmod +x /vault/secrets/activemq.sh && ./vault/secrets/activemq.sh" 
     podSecurity:
       serviceAccountName: activemq
     size: 2
@@ -29,16 +25,6 @@ spec:
     initImage: "quay.io/artemiscloud/activemq-artemis-broker-init:1.0.11"
     persistenceEnabled: false
     messageMigration: true
-    # readinessProbe:
-    #     exec:
-    #       command:
-    #         - /bin/bash
-    #         - '-c'
-    #         - /opt/amq/bin/readinessProbe.sh
-    #         - '1'
-    #         - >-
-    #           /vault/secrets/activemq.sh
-    #           source .bashrc
     clustered: true
     # storage:
     #   size: "5Gi"
