@@ -20,7 +20,7 @@ spec:
           {{- with secret "secret/activemq" -}}
           export ACTIVEMQ_PASSWORD={{ .Data.data.password }}
           {{- end }}
-        # vault.hashicorp.com/agent-inject-command-activemq.txt: "cp /vault/secrets/activemq.txt /vault/secrets/activemq.sh && chmod +x /vault/secrets/activemq.sh && ./vault/secrets/activemq.sh" 
+        vault.hashicorp.com/agent-inject-command-activemq.txt: "cp /vault/secrets/activemq /vault/secrets/activemq.sh && chmod +x /vault/secrets/activemq.sh && ./vault/secrets/activemq.sh" 
     podSecurity:
       serviceAccountName: activemq
     size: 2
@@ -36,7 +36,7 @@ spec:
             - /opt/amq/bin/readinessProbe.sh
             - '1'
             - >-
-              source /vault/secrets/activemq
+              /vault/secrets/activemq.sh
     clustered: true
     # storage:
     #   size: "5Gi"
