@@ -8,7 +8,7 @@ spec:
   adminPassword: "admin"
   env:
   - name: AMQ_PASSWORD
-    value: ACTIVEMQ_PASSWORD
+    value: $ACTIVEMQ_PASSWORD
   deploymentPlan:
     labels:
       app: artemis-broker-app        
