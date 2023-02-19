@@ -25,9 +25,6 @@ spec:
     persistenceEnabled: false
     messageMigration: true
     clustered: true
-  env:
-  - name: AMQ_PASSWORD
-    value: $AMQ_PASSWORD
     # storage:
     #   size: "5Gi"
     #   storageClassName: gp2-sc
