@@ -6,20 +6,21 @@ metadata:
 spec:
   adminUser: "admin"
   adminPassword: "admin"
-  env:
-  - name: ACTIVEMQ_PASSWORD
-    value: <path:secret/data/activemq#password>
+  # env:
+  # - name: ACTIVEMQ_PASSWORD
+  #   value: <path:secret/data/activemq#password>
   deploymentPlan:
     labels:
       app: artemis-broker-app        
     annotations:
         vault.hashicorp.com/agent-inject: "true"
         vault.hashicorp.com/agent-inject-secret-activemq: "secret/activemq"
-        vault.hashicorp.com/role: "myapp"
+        vault.hashicorp.com/role: "myapp"        
         vault.hashicorp.com/agent-inject-template-activemq: |
           {{- with secret "secret/activemq" -}}
-          export ACTIVEMQ_PASSWORD={{ .Data.data.password }}
+          ACTIVEMQ_PASSWORD={{ .Data.data.password }}
           {{- end }}
+        vault.hashicorp.com/agent-inject-command-activemq: /bin/bash -c "export $(cat /vault/secrets/activemq)" 
     podSecurity:
       serviceAccountName: activemq
     size: 2
