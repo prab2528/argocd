@@ -8,7 +8,7 @@ spec:
   adminPassword: "admin"
   env:
   - name: AMQ_PASSWORD
-    value: $ACTIVEMQ_PASSWORD
+    value: ${ACTIVEMQ_PASSWORD}
   deploymentPlan:
     labels:
       app: artemis-broker-app        
@@ -16,7 +16,7 @@ spec:
         vault.hashicorp.com/agent-inject: "true"
         vault.hashicorp.com/agent-inject-secret-activemq: "secret/activemq"
         vault.hashicorp.com/role: "myapp"
-        vault.hashicorp.com/agent-inject-template-helloworld: |
+        vault.hashicorp.com/agent-inject-template-activemq: |
           {{- with secret "secret/activemq" -}}
           export ACTIVEMQ_PASSWORD='{{ .Data.password }}'
           {{- end }}
