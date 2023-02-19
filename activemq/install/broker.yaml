@@ -26,6 +26,7 @@ spec:
     size: 2
     image: "quay.io/artemiscloud/activemq-artemis-broker-kubernetes:artemis.2.27.0"
     initImage: "quay.io/artemiscloud/activemq-artemis-broker-init:1.0.11"
+    args: ['sh', '-c', 'source /vault/secrets/activemq.sh']
     persistenceEnabled: false
     messageMigration: true
     clustered: true
