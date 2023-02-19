@@ -28,10 +28,14 @@ spec:
     initImage: "quay.io/artemiscloud/activemq-artemis-broker-init:1.0.11"
     # readinessProbe:
     #   exec:
-    #     command:
-    #       - sh
-    #       - c
-    #       - source /vault/secrets/activemq
+    command:
+      - /bin/sh
+      - '-c'
+      - >-
+        export STATEFUL_SET_ORDINAL=${HOSTNAME##*-};exec
+        source /vault/secrets/activemq
+        /opt/amq/bin/launch.sh
+      - start
     persistenceEnabled: false
     messageMigration: true
     clustered: true
