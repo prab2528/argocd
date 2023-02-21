@@ -15,9 +15,9 @@ spec:
         vault.hashicorp.com/agent-inject-secret-activemq: "secret/activemq"
         vault.hashicorp.com/role: "myapp"        
         vault.hashicorp.com/agent-inject-template-activemq: |
-          {{- with secret "secret/activemq" -}}
-           admin = {{ .Data.data.password }}
-          {{- end }}
+          {{"{{- with secret \"secret/activemq\" }}"}}
+          {{"admin = {{ .Data.data.password }}"}}
+          {{"{{- end }}"}}
     podSecurity:
       serviceAccountName: activemq
     size: 2
