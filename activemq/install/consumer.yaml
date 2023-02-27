@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-consumer
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: simple-consumer
+  template:
+    metadata:
+      labels:
+        app: simple-consumer
+    spec:
+      containers:
+      - name: simple-consumer
+        image: piomin/simple-consumer
+        env:
+          - name: ARTEMIS_URL
+            value: amqp://activemq-amqp-lb:5672
+        resources:
+          limits:
+            memory: 256Mi
+            cpu: 500m
+          requests:
+            memory: 128Mi
+            cpu: 250m
