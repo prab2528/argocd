@@ -152,4 +152,18 @@ metadata:
   name: activemq
   labels:
     app: artemis-broker-app
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: activemq-amqp-lb
+spec:
+  ports:
+    - name: amqp
+      protocol: TCP
+      port: 5672
+  type: ClusterIP
+  selector:
+    application: artemis-broker-app
     
