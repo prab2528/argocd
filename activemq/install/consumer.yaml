@@ -17,7 +17,7 @@ spec:
         image: piomin/simple-consumer:v1.0-86-gf8da117-dirty
         env:
           - name: ARTEMIS_URL
-            value: amqp://activemq-amqp-lb:5672
+            value: amqp://activemq-amqp-lb.activemq.svc.cluster.local:5672
         resources:
           limits:
             memory: 256Mi
