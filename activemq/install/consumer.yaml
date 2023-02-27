@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: simple-consumer
-        image: piomin/simple-consumer
+        image: piomin/simple-consumer:v1.0-93-g632a233-dirty
         env:
           - name: ARTEMIS_URL
             value: amqp://activemq-amqp-lb:5672
