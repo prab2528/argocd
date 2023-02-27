@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-producer
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: simple-producer
+  template:
+    metadata:
+      labels:
+        app: simple-producer
+    spec:
+      containers:
+        - name: simple-producer
+          image: piomin/simple-producer
+          env:
+            - name: ARTEMIS_URL
+              value: amqp://activemq-amqp-lb.activemq.svc.cluster.local:5672
+            - name: DESTINATION
+              value: test-1
+          ports:
+            - containerPort: 8080
