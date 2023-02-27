@@ -41,9 +41,10 @@ spec:
       protocols: amqp
       port: 5672
       connectionsAllowed: 5
-  addressName: address-1
-  queueName: test-1
-  routingType: anycast
+  # addressSettings:
+  #   addressName: address-1
+  #   queueName: test-1
+  #   routingType: anycast
   # console: # (3)
   #   expose: true
 ---
