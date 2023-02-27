@@ -166,4 +166,5 @@ spec:
   type: ClusterIP
   selector:
     application: artemis-broker-app
+    app: artemis-broker-app
     
