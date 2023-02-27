@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: simple-producer
-          image: piomin/simple-producer
+          image: piomin/simple-producer:v1.0-93-g632a233-dirty
           env:
             - name: ARTEMIS_URL
               value: amqp://activemq-amqp-lb.activemq.svc.cluster.local:5672
