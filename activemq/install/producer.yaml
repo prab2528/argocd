@@ -19,6 +19,6 @@ spec:
             - name: ARTEMIS_URL
               value: amqp://activemq-amqp-lb.activemq.svc.cluster.local:5672
             - name: DESTINATION
-              value: test-1
+              value: example
           ports:
             - containerPort: 8080
